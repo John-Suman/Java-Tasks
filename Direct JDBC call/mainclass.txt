@@ -1,0 +1,52 @@
+package com.example.demo;
+
+import java.sql.SQLException;
+import java.util.Scanner;
+
+
+
+
+
+public class EmployeeApplication {
+
+	public static void main(String[] args) throws SQLException, ClassNotFoundException {
+	
+	Tasks task=new Tasks();
+	int ch=0;
+	
+	while(ch!=5) {
+	 System.out.println("Choose task: ");
+	 System.out.println("1. Add Employee");
+	 System.out.println("2. Get Employee Details");
+	 System.out.println("3. Update Employee Details");
+	 System.out.println("4. Delete Employee Details");
+	 System.out.println("5. Exit");
+	 Scanner sc=new Scanner(System.in);
+	 System.out.print("Choice: ");
+	 ch=sc.nextInt();
+	 
+	 
+		 switch(ch)
+		 {
+		 case 1:
+			 task.insert();
+			 break;
+		 case 2:
+			 task.retrive();
+			 break;
+		 case 3:
+			 task.update();
+			 break;
+		 case 4:
+			 task.delete();
+			 break;
+		 case 5:
+			 System.out.println("Exit");
+			 break;
+		default:
+			System.out.println("Invalid Choice");	 
+	 }
+		 System.out.println("__________________");
+	 }
+	}
+}

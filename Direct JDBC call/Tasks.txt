@@ -1,0 +1,147 @@
+package com.example.demo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class Tasks {
+	static String url = "jdbc:mysql://localhost:3306/demo"; // table details
+    static String username = "root"; // MySQL credentials
+    static String password = "john890";
+    
+	
+	
+	void insert() throws SQLException, ClassNotFoundException
+	{
+	     //open Connection
+ 		 Class.forName("com.mysql.cj.jdbc.Driver");
+	     Connection con = DriverManager.getConnection(url, username, password);
+	     
+	     Scanner sc=new Scanner(System.in);
+	     //Get input
+	     System.out.print("Enter Details\n_________________\n");
+	     System.out.print("EmpolyeeID: ");
+	     int id=sc.nextInt();
+	     System.out.print("Name: ");
+	     String name=sc.next();
+	     System.out.print("Email ID: ");
+	     String mail=sc.next();
+	     System.out.print("Phone: ");
+	     long phone=sc.nextLong();
+	     System.out.print("Address: ");
+	     String address=sc.next();
+	     System.out.print("Join Date: ");
+	     String date=sc.next();
+	     System.out.print("Department ID: ");
+	     int deptId=sc.nextInt();
+	     System.out.print("Salary: ");
+	     int salary=sc.nextInt();
+	     
+	     //SQL query
+	     String query="INSERT INTO employee (EmployeeID, Name, Email, Phone, Address, JoinDate, DepartmentID, Salary)"
+	    		 +"VALUES ("+id+",'"+name +"','"+mail +"',"+ phone+",'"+address+"', STR_TO_DATE('"+date+"', '%Y-%m-%d'),"+deptId+","+salary+")"; 
+	     
+	     //Create Staement and execute
+	     Statement st = con.createStatement();
+	     boolean result=st.execute(query);
+	     System.out.println("Row Added: " + !result);
+	     //Close Connection
+	     st.close(); 
+	     con.close();
+	}
+	
+	//Retriving
+	void retrive() throws SQLException, ClassNotFoundException
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection con = DriverManager.getConnection(url, username, password);
+		
+		   String query="SELECT * FROM employee";
+		   Statement st = con.createStatement();
+		   ResultSet rs=st.executeQuery(query);
+		   
+		   //retrive data from result set;
+		   ResultSetMetaData md=rs.getMetaData();
+		   int n=md.getColumnCount();
+		   while(rs.next()){
+			   for(int i=1;i<=n;i++) {
+				   if(i>1) {System.out.print(", ");}
+				   System.out.print(md.getColumnName(i)+": "+rs.getString(i));
+			   }
+			   System.out.print("\n");
+		   }
+		   st.close(); // close statement
+		   con.close(); // close connection
+	}
+
+	
+	
+	void update() throws ClassNotFoundException, SQLException
+	{   
+		Class.forName("com.mysql.cj.jdbc.Driver"); // Driver name
+		Connection con = DriverManager.getConnection(url, username, password);
+		Scanner sc=new Scanner(System.in);
+	     //Get input
+	     System.out.print("Enter Details\n_________________\n");
+	     System.out.print("EmpolyeeID: ");
+	     int id=sc.nextInt();
+	     System.out.print("Name: ");
+	     String name=sc.next();
+	     System.out.print("Email ID: ");
+	     String mail=sc.next();
+	     System.out.print("Phone: ");
+	     long phone=sc.nextLong();
+	     System.out.print("Address: ");
+	     String address=sc.next();
+	     System.out.print("Join Date: ");
+	     String date=sc.next();
+	     System.out.print("Department ID: ");
+	     int deptId=sc.nextInt();
+	     System.out.print("Salary: ");
+	     int salary=sc.nextInt();
+	     
+	     //SQL query
+	     String query="UPDATE employee set Name='"+name +"', Email='"+mail +"', Phone="+ phone+", Address='"+address+
+	    		 "', JoinDate=STR_TO_DATE('"+date+"', '%Y-%m-%d'), DepartmentID="+deptId+", Salary="+salary+" WHERE EmployeeID="+id;
+	     
+	     
+	   //Create Staement and execute
+	     Statement st = con.createStatement();
+	     int result = st.executeUpdate(query);
+	     System.out.println("Rows Affected: " + result);
+	     //Close Connection
+	     st.close(); 
+	     con.close();
+	}
+	
+	void delete() throws ClassNotFoundException, SQLException
+	{
+		Class.forName("com.mysql.cj.jdbc.Driver"); // Driver name
+		Connection con = DriverManager.getConnection(url, username, password);
+		
+	     
+	    
+		Scanner sc=new Scanner(System.in);
+		
+		System.out.print("Enter id to Delete: ");
+		int id=sc.nextInt();
+		 //SQL query
+	     String query="DELETE FROM employee WHERE EmployeeID="+id;
+	     
+	     
+	   //Create Staement and execute
+	     Statement st = con.createStatement();
+	     int result = st.executeUpdate(query);
+	     System.out.println("Deleted Row" + result);
+	     //Close Connection
+	     st.close(); 
+	     con.close();
+	 
+	}
+	
+	
+}
