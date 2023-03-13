@@ -1,0 +1,51 @@
+package unit;
+
+import org.junit.Test;
+
+import program.StockPurchase;
+
+import org.junit.Before;
+import org.junit.After;
+import static org.junit.Assert.*;
+
+public class StockPurchaseTest {
+    private StockPurchase purchase;
+    
+    //Execute before  each test case
+    @Before
+    public void setUp() {
+        purchase = new StockPurchase("AAPL", 100, 132.05);
+    }
+
+    //Execute after each test case
+    @After
+    public void tearDown() {
+        purchase = null;
+    }
+    
+    
+    //test case to check name
+    @Test
+    public void testGetStockName() {
+        assertEquals("AAPL", purchase.getStockName());
+    }
+    
+  //test case to check quantity
+    @Test
+    public void testGetQuantity() {
+        assertEquals(100, purchase.getQuantity());
+    }
+
+  //test case to check price
+    @Test
+    public void testGetPrice() {
+        assertEquals(132.05, purchase.getPrice(), 0.001);
+    }
+
+  //test case to check calculated total price
+    @Test
+    public void testGetTotalCost() {
+        assertEquals(13205.0, purchase.getTotalCost(), 0.001);
+    }
+}
+  
