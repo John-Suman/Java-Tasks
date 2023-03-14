@@ -1,0 +1,81 @@
+package testcase;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import test.Tasks;
+
+public class TestCase {
+
+	private Tasks task;
+	
+	
+	@Before
+	public void setUp() {
+		task = new Tasks();
+	}
+	
+	@After
+	public void tearDown() {
+		task = null;
+	}
+    
+    //Execute before  each test case
+    
+    //Insertion Test
+    @Test
+    public void testInsert() {
+    	
+        //check correct value
+    	task= new Tasks(2,"john",545646,7000);
+		assertTrue(task.insert());
+		
+		//check duplicate primary key
+		task = new Tasks(2,"john",54654,7000);
+		assertFalse(task.insert());
+		
+		//check negative value
+    	task= new Tasks(-1,"john",545646,7000);
+		assertFalse(task.insert());
+		
+		//check correct value
+    	task= new Tasks(3,"jaga",545646,7000);
+		assertTrue(task.insert());
+    }
+    
+    
+    //Check total stored value stored values 
+    @Test
+	public void testRetrieve() {
+	
+		int rows = task.retrive();
+		assertTrue(rows > 0);
+	}
+    
+    
+    @Test
+    public void testUpdate() {
+        // Update the row
+        task= new Tasks(2,"suman",545646,7000);
+        boolean success = task.update();
+
+        // Check if update was successful
+        assertTrue(success);
+    }
+    
+    @Test
+    public void testDelete() {
+    	// Delete the row
+    	
+        boolean success = task.delete(1);
+
+        // Check if delete was successful
+        assertTrue(success);
+    }
+	
+	
+}

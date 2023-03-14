@@ -1,0 +1,163 @@
+package test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class Tasks {
+	
+	
+
+	
+	 public Tasks() {
+		// TODO Auto-generated constructor stub
+	}
+
+	//Get input
+	 private int id;
+	 private String name;
+	 private long phone;
+	 private int salary;
+	 
+	public Tasks(int id, String name, long phone, int salary) {
+		this.id = id;
+		this.name = name;
+		this.phone = phone;
+		this.salary = salary;
+	}
+
+	static String url = "jdbc:mysql://localhost:3306/demo"; // table details
+    static String username = "root"; // MySQL credentials
+    static String password = "john890";
+    
+	
+	
+	public boolean insert()
+	{
+	     try {
+			//open Connection
+			 Class.forName("com.mysql.cj.jdbc.Driver");
+			 Connection con = DriverManager.getConnection(url, username, password);
+			 
+			 //SQL query
+			 String query="INSERT INTO employee (EmployeeID, Name,Phone, Salary)"
+					 +"VALUES ("+id+",'"+name +"',"+ phone+","+salary+")"; 
+			 
+			 //Create Statement and execute
+			 Statement st = con.createStatement();
+			 boolean result=st.execute(query);
+			 System.out.println("Row Added: " + !result);
+			 //Close Connection
+			 st.close(); 
+			 con.close();
+			 return true;
+		}catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+	
+	//Retriving
+	public int retrive()
+	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(url, username, password);
+			
+			   String query="SELECT * FROM employee";
+			   Statement st = con.createStatement();
+			   ResultSet rs=st.executeQuery(query);
+			   
+			   
+			   
+			   //Retrieve data from result set;
+			   ResultSetMetaData md=rs.getMetaData();
+			   int n=md.getColumnCount();
+			   int m=0;
+			   while(rs.next()){
+				   
+				   m++;
+				   for(int i=1;i<=n;i++) {
+					   if(i>1) {System.out.print(", ");}
+					   System.out.print(md.getColumnName(i)+": "+rs.getString(i));
+				   }
+				   System.out.print("\n");
+			   }
+			   st.close(); // close statement
+			   con.close(); // close connection	   
+			   return m;
+	    }
+		catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return 0;
+		}
+		
+		   
+		   
+	}
+
+	
+	
+	public boolean update()
+	{   
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); // Driver name
+			Connection con = DriverManager.getConnection(url, username, password);
+			 
+			 //SQL query
+			 String query="UPDATE employee set Name='"+name +"', Phone="+ phone+", Salary="+salary+" WHERE EmployeeID="+id;
+			 
+			 
+   //Create Statement and execute
+			 Statement st = con.createStatement();
+			 int result = st.executeUpdate(query);
+			 System.out.println("Rows Affected: " + result);
+			 //Close Connection
+			 st.close(); 
+			 con.close();
+			 
+			 return true;
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean delete(int id) 
+	{
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); // Driver name
+			Connection con = DriverManager.getConnection(url, username, password);
+			
+			 
+			
+			Scanner sc=new Scanner(System.in);
+			 //SQL query
+			 String query="DELETE FROM employee WHERE EmployeeID="+id;
+			 
+			 
+			 //Create Statement and execute
+			 Statement st = con.createStatement();
+			 int result = st.executeUpdate(query);
+			 System.out.println("Deleted Row" + result);
+			 //Close Connection
+			 st.close(); 
+			 con.close();
+			 
+			 return true;
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	 
+	}
+}
